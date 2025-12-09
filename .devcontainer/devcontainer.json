@@ -18,7 +18,7 @@
 		}
 	},
 	"updateContentCommand": "sudo apt-get update",
-	"postCreateCommand": "sudo apt-get install -y libnspr4 libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libx11-6 libasound2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libdrm2 libpangocairo-1.0-0 libxkbfile1 libcups2 ca-certificates dbus-x11 xvfb fonts-noto-color-emoji fonts-symbola dpkg fakeroot rpm",
+	"postCreateCommand": "sudo apt-get install -y libnspr4 libnss3 libatk-bridge2.0-0 libgtk-3-0 libxss1 libx11-6 libasound2 libxcomposite1 libxdamage1 libxrandr2 libgbm1 libdrm2 libpangocairo-1.0-0 libxkbfile1 libcups2 ca-certificates dbus-x11 xvfb fonts-noto-color-emoji fonts-symbola dpkg fakeroot rpm flatpak flatpak-builder elfutils",
 	"postStartCommand": "npm install",
 	"initializeCommand": "[ -x \"$(command -v xhost)\" ] && xhost +local:docker || true", // "xhost -local:docker" to disable
 	"mounts": [

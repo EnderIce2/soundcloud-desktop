@@ -21,7 +21,11 @@ jobs:
 
       - name: Install build dependencies (Ubuntu)
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y dpkg fakeroot rpm
+        run: sudo apt-get update && sudo apt-get install -y dpkg fakeroot rpm flatpak flatpak-builder elfutils
+
+      - name: Add Flathub repository
+        if: runner.os == 'Linux'
+        run: flatpak remote-add --if-not-exists --user flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 
       - name: Install dependencies
         run: npm install

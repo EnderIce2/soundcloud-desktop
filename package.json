@@ -2,7 +2,8 @@
   "name": "soundcloud-desktop",
   "productName": "SoundCloud Desktop",
   "version": "1.0.0",
-  "description": "SoundCloud Desktop Application for PC and Mac",
+  "description": "Unofficial SoundCloud Desktop Application for PC and Mac",
+  "homepage": "https://github.com/EnderIce2/soundcloud-desktop",
   "main": "src/index.js",
   "scripts": {
     "start": "electron-forge start",
@@ -16,13 +17,14 @@
     "name": "enderice2",
     "email": "enderice2@protonmail.com"
   },
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "dependencies": {
     "electron-squirrel-startup": "^1.0.1"
   },
   "devDependencies": {
     "@electron-forge/cli": "^7.10.2",
     "@electron-forge/maker-deb": "^7.10.2",
+    "@electron-forge/maker-flatpak": "^7.10.2",
     "@electron-forge/maker-rpm": "^7.10.2",
     "@electron-forge/maker-squirrel": "^7.10.2",
     "@electron-forge/maker-zip": "^7.10.2",
