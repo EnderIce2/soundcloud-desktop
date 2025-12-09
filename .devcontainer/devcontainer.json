@@ -33,6 +33,11 @@
 			"type": "bind"
 		},
 		{
+			"source": "/var/run/docker.sock",
+			"target": "/var/run/docker.sock",
+			"type": "bind"
+		},
+		{
 			"source": "/run/user/1000/pulse/native",
 			"target": "/run/user/1000/pulse/native",
 			"type": "bind"
