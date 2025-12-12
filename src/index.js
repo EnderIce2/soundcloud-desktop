@@ -8,7 +8,6 @@ const rpc = new RPC.Client({ transport: 'ipc' });
 let started = false;
 
 async function connectRPC() {
-  // console.log(started);
   if (started)
     return;
 
@@ -41,7 +40,8 @@ async function setListeningPresence(track) {
       large_text: track.album
     },
     instance: false,
-    type: 2 // 2 = LISTENING
+    type: 2, // 2 = LISTENING
+    statusDisplayType: 1 // 0 = Name, 1 = State, 2 = Details
   };
 
   const legacy = {
@@ -51,7 +51,8 @@ async function setListeningPresence(track) {
     endTimestamp: activity.timestamps.end,
     largeImageKey: track.artwork || undefined,
     largeImageText: track.album,
-    type: 2 // 2 = LISTENING
+    type: 2, // 2 = LISTENING
+    statusDisplayType: 1 // 0 = Name, 1 = State, 2 = Details
   };
 
   try {
