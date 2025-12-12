@@ -39,8 +39,14 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build/release Electron app
+      - name: Build/release Electron app (linux/macos)
+        if: runner.os != 'Windows'
         run: DEBUG=electron-forge:*,electron-installer-debian,flatpak-bundler npm run make
+
+        # yea, i forgot that you need special treatment
+      - name: Build/release Electron app (windows)
+        if: runner.os == 'Windows'
+        run: npm run make
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v5
