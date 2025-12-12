@@ -26,7 +26,7 @@ jobs:
 
       - name: Install WiX Toolset
         if: runner.os == 'Windows'
-        run: choco install wixtoolset  --version=3.14.0 --yes
+        run: choco install wixtoolset  --version=3.14.0 --yes --allow-downgrade
 
       - name: Install build dependencies (Ubuntu)
         if: runner.os == 'Linux'
