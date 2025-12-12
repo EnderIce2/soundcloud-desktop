@@ -14,7 +14,7 @@ module.exports = {
       name: '@electron-forge/maker-squirrel',
       config: {
         authors: 'enderice2 <enderice2@protonmail.com>',
-        setupIcon: path.resolve(__dirname, 'assets', 'logo.png'),
+        setupIcon: path.resolve(__dirname, 'assets', 'logo.ico'),
       },
     },
     {
@@ -22,7 +22,7 @@ module.exports = {
       config: {
         language: 1033,
         manufacturer: 'enderice2',
-        icon: path.resolve(__dirname, 'assets', 'logo.png'),
+        icon: path.resolve(__dirname, 'assets', 'logo.ico'),
       }
     },
     {
@@ -30,6 +30,13 @@ module.exports = {
       platforms: ['darwin', 'linux'],
       config: {
         icon: path.resolve(__dirname, 'assets', 'logo.png'),
+      },
+    },
+    {
+      name: '@electron-forge/maker-dmg',
+      platforms: ['darwin'],
+      config: {
+        icon: path.resolve(__dirname, 'assets', 'logo.icns'),
       },
     },
     {
