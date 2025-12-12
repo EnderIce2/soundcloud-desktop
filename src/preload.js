@@ -5,9 +5,9 @@ const { ipcRenderer } = require('electron');
 
 // Expose window control methods to the renderer process
 window.electronAPI = {
-	minimize: () => ipcRenderer.send('window-minimize'),
-	maximize: () => ipcRenderer.send('window-maximize'),
-	close: () => ipcRenderer.send('window-close')
+  minimize: () => ipcRenderer.send('window-minimize'),
+  maximize: () => ipcRenderer.send('window-maximize'),
+  close: () => ipcRenderer.send('window-close')
 };
 
 // Inject dark mode scrollbar CSS into the page

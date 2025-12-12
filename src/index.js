@@ -1,5 +1,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('node:path');
+const RPC = require('discord-rpc');
+
+const DISCORD_CLIENT_ID = '1449083750217416734';
+RPC.register(DISCORD_CLIENT_ID);
+const rpc = new RPC.Client({ transport: 'ipc' });
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -99,9 +104,7 @@ app.whenReady().then(() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
+  if (process.platform !== 'darwin') { app.quit(); }
 });
 
 // In this file you can include the rest of your app's specific main process
