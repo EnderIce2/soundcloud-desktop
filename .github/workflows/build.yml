@@ -19,6 +19,15 @@ jobs:
         with:
           node-version: 22
 
+      - name: Install build dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))
+        shell: powershell
+
+      - name: Install WiX Toolset
+        if: runner.os == 'Windows'
+        run: choco install wixtoolset  --version=3.14.0 --yes
+
       - name: Install build dependencies (Ubuntu)
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y dpkg fakeroot rpm flatpak flatpak-builder elfutils

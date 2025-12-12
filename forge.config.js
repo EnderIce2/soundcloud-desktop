@@ -27,7 +27,7 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-zip',
-      platforms: ['darwin'],
+      platforms: ['darwin', 'linux'],
       config: {
         icon: path.resolve(__dirname, 'assets', 'logo.png'),
       },
@@ -55,6 +55,7 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-deb',
+      platforms: ['linux'],
       config: {
         options: {
           maintainer: 'enderice2 <enderice2@protonmail.com>',
@@ -69,6 +70,7 @@ module.exports = {
     },
     {
       name: '@electron-forge/maker-rpm',
+      platforms: ['linux'],
       config: {
         options: {
           productName: 'SoundCloud Desktop',
