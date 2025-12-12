@@ -18,6 +18,14 @@ module.exports = {
       },
     },
     {
+      name: '@electron-forge/maker-wix',
+      config: {
+        language: 1033,
+        manufacturer: 'enderice2',
+        icon: path.resolve(__dirname, 'assets', 'logo.png'),
+      }
+    },
+    {
       name: '@electron-forge/maker-zip',
       platforms: ['darwin'],
       config: {
