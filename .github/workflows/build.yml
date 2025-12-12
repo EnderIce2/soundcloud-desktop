@@ -31,7 +31,7 @@ jobs:
         run: npm install
 
       - name: Build/release Electron app
-        run: npm run make
+        run: DEBUG=electron-forge:*,electron-installer-debian,flatpak-bundler npm run make
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v5
