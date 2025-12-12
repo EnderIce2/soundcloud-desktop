@@ -5,6 +5,130 @@ const RPC = require('discord-rpc');
 const DISCORD_CLIENT_ID = '1449083750217416734';
 RPC.register(DISCORD_CLIENT_ID);
 const rpc = new RPC.Client({ transport: 'ipc' });
+let started = false;
+
+async function connectRPC() {
+  // console.log(started);
+  if (started)
+    return;
+
+  try {
+    await rpc.login({ clientId: DISCORD_CLIENT_ID });
+    started = true;
+    console.log('Discord RPC connected');
+  } catch (err) {
+    console.warn('RPC connect error:', err);
+  }
+}
+
+const PID = process.pid;
+
+// track = { title, artist, artwork, durationSec, startTimestampMs }
+async function setListeningPresence(track) {
+  await connectRPC();
+  if (!started) return;
+
+  const start = Math.floor((track.startTimestampMs || Date.now()) / 1000);
+  const end = track.durationSec ? start + Math.floor(track.durationSec) : undefined;
+  console.log('start:', start, ' end:', end, ' rpc:', end ? { start, end } : { start });
+
+  const activity = {
+    details: track.title || 'Unknown track',
+    state: track.artist || '',
+    timestamps: end ? { start, end } : { start },
+    assets: {
+      large_image: track.artwork || undefined,
+      large_text: track.album
+    },
+    instance: false,
+    type: 2 // 2 = LISTENING
+  };
+
+  const legacy = {
+    details: activity.details,
+    state: activity.state,
+    startTimestamp: activity.timestamps.start,
+    endTimestamp: activity.timestamps.end,
+    largeImageKey: track.artwork || undefined,
+    largeImageText: track.album,
+    type: 2 // 2 = LISTENING
+  };
+
+  try {
+    if (typeof rpc.request === 'function') {
+      try {
+        await rpc.request('SET_ACTIVITY', { pid: PID, activity });
+        console.log('rpc.request SET_ACTIVITY sent (activity.type=2)');
+        return;
+      } catch (e) {
+        console.warn('rpc.request SET_ACTIVITY failed, falling back:', e && e.message);
+      }
+    }
+
+    if (typeof rpc.setActivity === 'function') {
+      try {
+        await rpc.setActivity(legacy);
+        console.log('rpc.setActivity sent (legacy) with type=2');
+        return;
+      } catch (e) {
+        console.warn('rpc.setActivity failed, trying updatePresence:', e && e.message);
+      }
+    }
+
+    if (typeof rpc.updatePresence === 'function') {
+      try {
+        await rpc.updatePresence(activity);
+        console.log('rpc.updatePresence sent (activity.type=2)');
+        return;
+      } catch (e) {
+        console.warn('rpc.updatePresence failed:', e && e.message);
+      }
+    }
+
+    console.warn('No RPC method succeeded to set activity');
+  } catch (err) {
+    console.warn('Failed to set presence:', err);
+  }
+}
+
+async function clearPresence() {
+  try {
+    if (!started)
+      return;
+
+    if (typeof rpc.clearActivity === 'function') {
+      await rpc.clearActivity();
+    } else if (typeof rpc.setActivity === 'function') {
+      await rpc.setActivity({});
+    }
+
+    console.log('Presence cleared');
+  } catch (e) {
+    console.warn('clearPresence error', e);
+  }
+}
+
+module.exports = { setListeningPresence, clearPresence, connectRPC };
+
+ipcMain.on('sc-debug', (ev, msg) => {
+  try {
+    console.log('[sc-debug]', new Date(msg.ts).toISOString(), ...(msg.args || []));
+  } catch (e) {
+    console.log('[sc-debug] malformed', msg);
+  }
+});
+
+ipcMain.on('sc-track-update', (ev, track) => {
+  console.log('[sc-track-update]', {
+    title: track.title || null,
+    artist: track.artist || null,
+    album: track.album || null,
+    artwork: track.artwork || null,
+    isPlaying: !!track.isPlaying,
+    source: track.source || null
+  });
+  setListeningPresence(track)
+});
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (require('electron-squirrel-startup')) {
@@ -21,7 +145,7 @@ const createWindow = () => {
     webPreferences: {
       preload: path.join(__dirname, 'preload.js'),
       userAgent: 'soundcloud-desktop/1.0.0',
-      contextIsolation: false,
+      contextIsolation: true,
     },
   });
 
