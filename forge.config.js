@@ -108,6 +108,10 @@ module.exports = {
             '--share=network',
             // System notifications with libnotify
             '--talk-name=org.freedesktop.Notifications',
+            // Discord RPC
+            '--filesystem=xdg-run/app/com.discordapp.Discord:create',
+            '--filesystem=xdg-run/.flatpak/dev.vencord.Vesktop:create',
+            '--filesystem=xdg-run/discord-ipc-0',
           ],
         },
       },
