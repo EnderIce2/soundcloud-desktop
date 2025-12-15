@@ -23,6 +23,13 @@ module.exports = {
         language: 1033,
         manufacturer: 'enderice2',
         icon: path.resolve(__dirname, 'assets', 'logo.ico'),
+        ui: {
+          chooseDirectory: true,
+          // images: {
+          //   background: path.resolve(__dirname, "493x312.png"),
+          //   banner: path.resolve(__dirname, "493x58.png")
+          // },
+        }
       }
     },
     {
@@ -37,27 +44,6 @@ module.exports = {
       platforms: ['darwin'],
       config: {
         icon: path.resolve(__dirname, 'assets', 'logo.icns'),
-      },
-    },
-    {
-      name: '@electron-forge/maker-flatpak',
-      platforms: ['linux'],
-      config: {
-        options: {
-          id: 'com.enderice2.soundcloud-desktop',
-          // runtime: 'org.freedesktop.Platform',
-          // runtimeVersion: '25.08',
-          sdk: 'org.freedesktop.Sdk',
-          base: 'io.atom.electron.BaseApp',
-          baseVersion: 'stable',
-          name: 'SoundCloud Desktop',
-          comment: 'Unofficial desktop app for SoundCloud',
-          description: 'Unofficial SoundCloud Desktop Application for PC and Mac',
-          categories: ['Audio', 'Music'],
-          icon: {
-            "512x512": path.resolve(__dirname, 'assets', 'logo.png'),
-          },
-        },
       },
     },
     {
@@ -87,6 +73,42 @@ module.exports = {
           revision: '1',
           summary: 'Unofficial SoundCloud desktop client',
           icon: path.resolve(__dirname, 'assets', 'logo.png'),
+        },
+      },
+    },
+    {
+      name: '@electron-forge/maker-flatpak',
+      platforms: ['linux'],
+      config: {
+        options: {
+          id: 'com.enderice2.soundcloud-desktop',
+          // runtime: 'org.freedesktop.Platform',
+          // runtimeVersion: '25.08',
+          sdk: 'org.freedesktop.Sdk',
+          base: 'io.atom.electron.BaseApp',
+          baseVersion: 'stable',
+          name: 'SoundCloud Desktop',
+          comment: 'Unofficial desktop app for SoundCloud',
+          description: 'Unofficial SoundCloud Desktop Application for PC and Mac',
+          categories: ['Audio', 'Music'],
+          icon: {
+            "512x512": path.resolve(__dirname, 'assets', 'logo.png'),
+            // scalable: 'icon.svg',
+          },
+          finishArgs: [
+            // Wayland/X11 Rendering
+            '--socket=x11', '--socket=wayland', '--share=ipc',
+            // OpenGL
+            '--device=dri',
+            // Audio output
+            '--socket=pulseaudio',
+            // Chromium uses a socket in tmp for its singleton check
+            '--env=TMPDIR=/var/tmp',
+            // Allow communication with network
+            '--share=network',
+            // System notifications with libnotify
+            '--talk-name=org.freedesktop.Notifications',
+          ],
         },
       },
     },
